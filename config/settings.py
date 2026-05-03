@@ -6,9 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-key'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["web-production-66d62.up.railway.app"]
 
 # ✅ INSTALLED APPS
 INSTALLED_APPS = [
@@ -106,3 +106,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-66d62.up.railway.app"
+]
