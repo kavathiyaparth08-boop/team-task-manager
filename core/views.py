@@ -202,8 +202,8 @@ def delete_task(request, id):
     if request.method == "POST":
         task = get_object_or_404(Task, id=id, project__members=request.user)
 
-        if task.assigned_to != request.user:
-            return JsonResponse({"error": "Not allowed"}, status=403)
+        if request.user not in task.project.members.all():
+         return JsonResponse({"error": "Not allowed"}, status=403)
 
         task.delete()
         return JsonResponse({"message": "deleted"}, status=200)
@@ -215,32 +215,23 @@ def delete_task(request, id):
 @login_required
 def update_task_status(request, id):
     if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            status = data.get("status")
+        data = json.loads(request.body)
 
-            if not status:
-                return JsonResponse({"error": "Status required"}, status=400)
+        task = get_object_or_404(Task, id=id)
 
-            task = get_object_or_404(Task, id=id, project__members=request.user)
+        # ✅ allow project members
+        if request.user not in task.project.members.all():
+            return JsonResponse({"error": "Not allowed"}, status=403)
 
-            if task.assigned_to != request.user:
-                return JsonResponse({"error": "Not allowed"}, status=403)
+        status = data.get("status")
 
-            # ✅ SAFE NORMALIZATION
-            status = status.lower().replace(" ", "_")
+        if status not in ["todo", "in_progress", "done"]:
+            return JsonResponse({"error": "Invalid status"}, status=400)
 
-            # ✅ VALIDATION (important)
-            if status not in ["todo", "in_progress", "done"]:
-                return JsonResponse({"error": "Invalid status"}, status=400)
+        task.status = status
+        task.save()
 
-            task.status = status
-            task.save()
-
-            return JsonResponse({"message": "updated", "status": status}, status=200)
-
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+        return JsonResponse({"message": "updated", "status": task.status}, status=200)
 
 
 # ✅ API TEST
