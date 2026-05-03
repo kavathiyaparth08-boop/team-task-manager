@@ -63,8 +63,7 @@ Deployment:
 
 📂 GitHub Repository
 
-👉 (Add your GitHub repo link here)
-
+👉 (https://github.com/kavathiyaparth08-boop/team-task-manager.git)
 ---
 
 ⚙️ Setup Instructions (Local)
@@ -109,12 +108,6 @@ SECRET_KEY=your_secret_key
 - Set environment variables
 - Used Procfile:
   web: python manage.py migrate && gunicorn config.wsgi
-
----
-
-🎥 Demo Video
-
-(Add your demo video link here)
 
 ---
 
