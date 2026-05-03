@@ -221,7 +221,7 @@ def update_task_status(request, id):
         if task.assigned_to != request.user:
             return JsonResponse({"error": "Not allowed"}, status=403)
 
-        task.status = data.get("status")
+        task.status = request.data.get('status').lower().replace(" ", "_")
         task.save()
 
         return JsonResponse({"message": "updated"}, status=200)
