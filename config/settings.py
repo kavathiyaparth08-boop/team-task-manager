@@ -6,7 +6,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-key'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEBUG = False
 
 ALLOWED_HOSTS = ["web-production-66d62.up.railway.app"]
